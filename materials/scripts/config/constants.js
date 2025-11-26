@@ -18,20 +18,21 @@ const FILE_NAMES = {
 const FIELD_NAMES = {
     // Registration fields
     REGISTRATION: {
-        NAME: 'Name',
-        DESCRIPTION: 'Description',
-        CONTACT: 'Contact',
-        WALLET_ADDRESS: 'Wallet Address',
-        TEAM_WILLINGNESS: 'Team Willingness'
+        NAME: '姓名',
+        DESCRIPTION: '简介',
+        CONTACT: '联系方式',
+        WALLET_ADDRESS: '钱包地址',
+        TEAM_WILLINGNESS: '组队意愿',
+        AVATAR_URL: '头像链接'
     },
     // Project submission fields
     SUBMISSION: {
-        PROJECT_NAME: 'Project Name',
-        PROJECT_DESCRIPTION: 'Project Description',
-        PROJECT_MEMBERS: 'Project Members',
-        PROJECT_LEADER: 'Project Leader',
-        REPOSITORY_URL: 'Repository URL',
-        TEAM_MEMBERS_WALLET: 'Team Members Wallet'
+        PROJECT_NAME: '项目名称',
+        PROJECT_DESCRIPTION: '项目描述',
+        PROJECT_MEMBERS: '项目成员',
+        PROJECT_LEADER: '项目负责人',
+        REPOSITORY_URL: '仓库地址',
+        TEAM_MEMBERS_WALLET: '团队成员钱包'
     }
 };
 
@@ -54,8 +55,8 @@ const REQUIRED_FIELDS = {
 const GITHUB_CONFIG = {
     REPO_URL: 'https://github.com/CasualHackathon/UniversalAI-ZetaChain', // TODO: Replace with actual repository URL
     ISSUE_TITLE_PREFIXES: {
-        REGISTRATION: 'Registration',
-        SUBMISSION: 'Submission'
+        REGISTRATION: '报名参赛',
+        SUBMISSION: '参赛项目提交'
     }
 };
 

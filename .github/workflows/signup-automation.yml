@@ -16,9 +16,9 @@ jobs:
   process-signup:
     runs-on: ubuntu-latest
     if: |
-      (github.event.action == 'opened' && startsWith(github.event.issue.title, 'Registration')) ||
-      (github.event.action == 'closed' && github.event.issue.state_reason == 'completed' && startsWith(github.event.issue.title, 'Registration') && github.actor != 'github-actions[bot]') ||
-      (github.event.action == 'edited' && startsWith(github.event.issue.title, 'Registration'))
+      (github.event.action == 'opened' && (startsWith(github.event.issue.title, 'Registration') || startsWith(github.event.issue.title, '参赛报名'))) ||
+      (github.event.action == 'closed' && github.event.issue.state_reason == 'completed' && (startsWith(github.event.issue.title, 'Registration') || startsWith(github.event.issue.title, '参赛报名')) && github.actor != 'github-actions[bot]') ||
+      (github.event.action == 'edited' && (startsWith(github.event.issue.title, 'Registration') || startsWith(github.event.issue.title, '参赛报名')))
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -68,15 +68,16 @@ jobs:
               echo "EOF" >> $GITHUB_OUTPUT
             else
               echo "error_message<<EOF" >> $GITHUB_OUTPUT
-              echo "❌ **Processing Failed**" >> $GITHUB_OUTPUT
+              echo "❌ **处理失败**" >> $GITHUB_OUTPUT
               echo "" >> $GITHUB_OUTPUT
-              echo "An unknown error occurred during processing. Please check if the submission format is correct." >> $GITHUB_OUTPUT
+              echo "处理过程中发生未知错误。请检查提交格式是否正确。" >> $GITHUB_OUTPUT
               echo "EOF" >> $GITHUB_OUTPUT
             fi
           fi
         env:
           ISSUE_BODY: ${{ github.event.issue.body }}
           ISSUE_USER: ${{ github.event.issue.user.login }}
+          ISSUE_USER_AVATAR: ${{ github.event.issue.user.avatar_url }}
           GITHUB_OUTPUT: ${{ github.output }}
 
       - name: Debug Output Values
@@ -94,20 +95,30 @@ jobs:
           script: |
             const { owner, repo } = context.repo;
             const issue_number = context.payload.issue.number;
+            
             // Get error message from extract-signup step output (use default if not available)
-            const errorMessage = `${{ steps.extract-signup.outputs.error_message }}` || '❌ **Processing Failed**\n\nAn unknown error occurred during processing. Please check if the submission format is correct.';
+            // Read from environment variable to safely handle special characters
+            let errorMessage = process.env.ERROR_MESSAGE || '❌ **处理失败**\n\n处理过程中发生未知错误。请检查提交格式是否正确。';
             
-            // Add error comment to Issue
-            await github.rest.issues.createComment({
-              owner,
-              repo,
-              issue_number,
-              body: errorMessage
-            });
+            try {
+              // Add error comment to Issue
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number,
+                body: errorMessage
+              });
+              
+              console.log(`❌ Error reported to user via comment: Issue #${issue_number}`);
+            } catch (commentError) {
+              console.error(`Failed to add comment: ${commentError.message}`);
+              // Still mark as failed even if comment fails
+            }
             
-            console.log(`❌ Error reported to user via comment: Issue #${issue_number}`);
             // Mark entire job as failed (expected state for error scenario)
             core.setFailed(errorMessage);
+        env:
+          ERROR_MESSAGE: ${{ steps.extract-signup.outputs.error_message }}
 
       - name: Commit & Push Changes
         # Only commit code when script execution is successful
@@ -154,7 +165,7 @@ jobs:
                 owner,
                 repo,
                 issue_number,
-                body: `✅ Registration processed successfully! (${actionType})`
+                body: `✅ 报名处理成功！(${actionType})`
               });
               
               // Close Issue when auto-triggered or edited

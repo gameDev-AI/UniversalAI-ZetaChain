@@ -4,7 +4,7 @@
  * Used to process project submission information from GitHub Issues, create project folders and update README table
  */
 
-const SubmissionProcessor = require('./processors/submission-processor');
+const SubmissionProcessor = require('./processors/submission_processor');
 
 // Get parameters from environment variables
 const issueBody = process.env.ISSUE_BODY;
@@ -25,16 +25,16 @@ try {
         fs.appendFileSync(process.env.GITHUB_OUTPUT, `script_success=true\n`);
     }
 
-    console.log('✅ Submission processing completed successfully');
+    console.log('✅ 提交处理完成');
 } catch (error) {
     // Set script_success to false when processing fails
     if (process.env.GITHUB_OUTPUT) {
         const fs = require('fs');
         fs.appendFileSync(process.env.GITHUB_OUTPUT, `script_success=false\n`);
-        fs.appendFileSync(process.env.GITHUB_OUTPUT, `error_message<<EOF\n❌ **Processing Failed**\n\nSubmission processing failed: ${error.message}\nEOF\n`);
+        fs.appendFileSync(process.env.GITHUB_OUTPUT, `error_message<<EOF\n❌ **处理失败**\n\n提交处理失败：${error.message}\nEOF\n`);
     }
 
-    console.error('ERROR_MESSAGE:', `❌ **Processing Failed**\n\nSubmission processing failed: ${error.message}`);
-    console.error('Project submission processing failed:', error.message);
+    console.error('ERROR_MESSAGE:', `❌ **处理失败**\n\n提交处理失败：${error.message}`);
+    console.error('项目提交处理失败：', error.message);
     process.exit(1);
 }

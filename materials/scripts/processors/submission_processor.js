@@ -1,10 +1,10 @@
 const path = require('path');
-const FileManager = require('../utils/file-manager');
-const { parseFieldFromContent } = require('../utils/parser-manager');
-const UserManager = require('../utils/user-manager');
-const ReadmeManager = require('../utils/readme-manager');
-const FieldValidator = require('../utils/field-validator');
-const { DIRECTORIES, FILE_NAMES, FIELD_NAMES } = require('../config/constants');
+const FileManager = require('../utils/file_manager');
+const { parseFieldFromContent } = require('../utils/parser_manager');
+const UserManager = require('../utils/user_manager');
+const ReadmeManager = require('../utils/readme_manager');
+const FieldValidator = require('../utils/field_validator');
+const { DIRECTORIES, FILE_NAMES, FIELD_NAMES, GITHUB_CONFIG } = require('../config/constants');
 
 /**
  * Submission processor
@@ -108,10 +108,10 @@ class SubmissionProcessor {
         });
 
         // Generate table content directly
-        let table = '| Project | Description | Members | Leader | Repository | Operate |\n| ----------- | ----------------- | -------------- | ------- | ---------- | -------- |\n';
+        let table = '| 项目 | 描述 | 成员 | 负责人 | 仓库 | 操作 |\n| ------- | ----------- | ------- | ------ | ---------- | ------- |\n';
 
         rows.forEach((row) => {
-            const issueTitle = `Submission - ${row.projectName}`;
+            const issueTitle = `${GITHUB_CONFIG.ISSUE_TITLE_PREFIXES.SUBMISSION} - ${row.projectName}`;
 
             // Read MD file content directly as body for edit link
             const filePath = path.join(submissionRoot, row.fileName);
@@ -122,7 +122,7 @@ class SubmissionProcessor {
             // Generate repository link: show 🔗 if exists, ❌ if not
             const repoLink = row.repositoryUrl && row.repositoryUrl.trim() !== '' ? `[🔗](${row.repositoryUrl})` : '❌';
 
-            table += `| ${row.projectName} | ${row.projectDescription} | ${row.projectMembers} | ${row.projectLeader} | ${repoLink} | [Edit](${issueUrl}) |\n`;
+            table += `| ${row.projectName} | ${row.projectDescription} | ${row.projectMembers} | ${row.projectLeader} | ${repoLink} | [编辑](${issueUrl}) |\n`;
         });
 
         ReadmeManager.updateReadmeSection('SUBMISSION', table);

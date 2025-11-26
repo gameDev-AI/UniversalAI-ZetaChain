@@ -1,6 +1,6 @@
 const path = require('path');
-const FileManager = require('./file-manager');
-const { parseFieldFromContent } = require('./parser-manager');
+const FileManager = require('./file_manager');
+const { parseFieldFromContent } = require('./parser_manager');
 const { DIRECTORIES, FIELD_NAMES } = require('../config/constants');
 
 /**

@@ -4,7 +4,7 @@
 
 const {
     parseFieldFromContent
-} = require('./parser-manager');
+} = require('./parser_manager');
 const {
     REQUIRED_FIELDS
 } = require('../config/constants');
@@ -58,9 +58,9 @@ class FieldValidator {
      * @returns {string} Error message
      */
     static generateValidationErrorMessage(type, missingFields) {
-        let errorMessage = `❌ **Field Validation Failed**\n\n`;
-        errorMessage += `**Missing required fields:** ${missingFields.join(', ')}\n\n`;
-        errorMessage += `Please fill in all required fields and resubmit.`;
+        let errorMessage = `❌ **字段验证失败**\n\n`;
+        errorMessage += `**缺少必填字段：** ${missingFields.join('、')}\n\n`;
+        errorMessage += `请填写所有必填字段后重新提交。`;
 
         return errorMessage;
     }
@@ -77,8 +77,8 @@ class FieldValidator {
         const isRegistered = FileManager.fileExists(registrationFile);
 
         if (!isRegistered) {
-            const errorMessage = `❌ **User Not Registered**\n\n` +
-                `User \`${githubUser}\` has not registered for the hackathon.`;
+            const errorMessage = `❌ **用户未报名**\n\n` +
+                `用户 \`${githubUser}\` 尚未报名参加本次黑客松。`;
 
             // Write both script_success and error_message to environment variable for workflow use
             if (process.env.GITHUB_OUTPUT) {
@@ -92,7 +92,7 @@ class FieldValidator {
             console.error('ERROR_MESSAGE:', errorMessage);
 
             // throw new Error(`User ${githubUser} not registered`);
-            console.error(`User ${githubUser} not registered`);
+            console.error(`用户 ${githubUser} 未报名`);
             process.exit(1);
         }
     }

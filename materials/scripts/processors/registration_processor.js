@@ -1,9 +1,9 @@
 const path = require('path');
-const FileManager = require('../utils/file-manager');
-const { parseFieldFromContent } = require('../utils/parser-manager');
-const UserManager = require('../utils/user-manager');
-const ReadmeManager = require('../utils/readme-manager');
-const FieldValidator = require('../utils/field-validator');
+const FileManager = require('../utils/file_manager');
+const { parseFieldFromContent } = require('../utils/parser_manager');
+const UserManager = require('../utils/user_manager');
+const ReadmeManager = require('../utils/readme_manager');
+const FieldValidator = require('../utils/field_validator');
 const { DIRECTORIES, FIELD_NAMES, GITHUB_CONFIG } = require('../config/constants');
 
 /**
@@ -14,15 +14,16 @@ class RegistrationProcessor {
      * Process registration request
      * @param {string} issueBody - Issue content
      * @param {string} githubUser - GitHub username
+     * @param {string} avatarUrl - User avatar URL
      */
-    static processRegistration(issueBody, githubUser) {
+    static processRegistration(issueBody, githubUser, avatarUrl) {
         console.log('Starting registration processing...');
 
         // Validate required fields
         FieldValidator.validateRequiredFields(issueBody, 'REGISTRATION');
 
-        // Save original issue content
-        this.createRegistrationFile(githubUser, issueBody);
+        // Save original issue content with avatar URL
+        this.createRegistrationFile(githubUser, issueBody, avatarUrl);
 
         // Update README table
         this.updateRegistrationTable();
@@ -35,10 +36,15 @@ class RegistrationProcessor {
      * Create registration file
      * @param {string} githubUser - GitHub username
      * @param {string} originalIssueBody - Original issue content
+     * @param {string} avatarUrl - User avatar URL
      */
-    static createRegistrationFile(githubUser, originalIssueBody) {
+    static createRegistrationFile(githubUser, originalIssueBody, avatarUrl) {
         const filePath = UserManager.getRegistrationFilePath(githubUser);
-        FileManager.saveFile(filePath, originalIssueBody, 'Registration information written');
+        // Append avatar URL to the file content
+        const contentWithAvatar = avatarUrl ?
+            `${originalIssueBody}\n\n**${FIELD_NAMES.REGISTRATION.AVATAR_URL}**\n> ${avatarUrl}` :
+            originalIssueBody;
+        FileManager.saveFile(filePath, contentWithAvatar, 'Registration information written');
     }
 
     /**
@@ -59,6 +65,7 @@ class RegistrationProcessor {
                 const contact = parseFieldFromContent(content, FIELD_NAMES.REGISTRATION.CONTACT);
                 const walletAddress = parseFieldFromContent(content, FIELD_NAMES.REGISTRATION.WALLET_ADDRESS);
                 const teamWillingness = parseFieldFromContent(content, FIELD_NAMES.REGISTRATION.TEAM_WILLINGNESS);
+                const avatarUrl = parseFieldFromContent(content, FIELD_NAMES.REGISTRATION.AVATAR_URL);
 
                 // Skip this file if parsing fails or key fields are empty
                 if (!name || !contact || !walletAddress) {
@@ -72,6 +79,7 @@ class RegistrationProcessor {
                     contact,
                     walletAddress,
                     teamWillingness,
+                    avatarUrl,
                     fileName: file
                 };
             } catch (error) {
@@ -88,7 +96,7 @@ class RegistrationProcessor {
         });
 
         // Generate table content directly
-        let table = '| Name | Description | Contact | Team Willingness | Operate |\n| ---- | ----------- | ------- | ---------------- | ------- |\n';
+        let table = '| 头像 | 姓名 | 简介 | 联系方式 | 组队意愿 | 操作 |\n| ---- | ---- | ----------- | ------- | ---------------- | ------- |\n';
 
         rows.forEach((row) => {
             const issueTitle = `${GITHUB_CONFIG.ISSUE_TITLE_PREFIXES.REGISTRATION} - ${row.name}`;
@@ -100,7 +108,12 @@ class RegistrationProcessor {
 
             const issueUrl = ReadmeManager.generateIssueUrl(issueTitle, issueBody);
 
-            table += `| ${row.name} | ${row.description} | ${row.contact} | ${row.teamWillingness} | [Edit](${issueUrl}) |\n`;
+            // Format avatar separately
+            const avatar = row.avatarUrl ?
+                `<img src="${row.avatarUrl}" width="30" height="30" style="border-radius: 50%; vertical-align: middle;" />` :
+                '';
+
+            table += `| ${avatar} | ${row.name} | ${row.description} | ${row.contact} | ${row.teamWillingness} | [编辑](${issueUrl}) |\n`;
         });
 
         ReadmeManager.updateReadmeSection('REGISTRATION', table);
