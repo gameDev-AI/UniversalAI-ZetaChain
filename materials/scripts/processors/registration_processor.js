@@ -96,7 +96,7 @@ class RegistrationProcessor {
         });
 
         // Generate table content directly
-        let table = '| 头像 | 姓名 | 简介 | 联系方式 | 组队意愿 | 操作 |\n| ---- | ---- | ----------- | ------- | ---------------- | ------- |\n';
+        let table = '| 头像 | 姓名 | 简介 | 联系方式 | 需要组队 | 操作 |\n| ---- | ---- | ----------- | ------- | ---------------- | ------- |\n';
 
         rows.forEach((row) => {
             const issueTitle = `${GITHUB_CONFIG.ISSUE_TITLE_PREFIXES.REGISTRATION} - ${row.name}`;

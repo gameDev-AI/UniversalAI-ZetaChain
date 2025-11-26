@@ -22,7 +22,7 @@ const FIELD_NAMES = {
         DESCRIPTION: '简介',
         CONTACT: '联系方式',
         WALLET_ADDRESS: '钱包地址',
-        TEAM_WILLINGNESS: '组队意愿',
+        TEAM_WILLINGNESS: '需要组队',
         AVATAR_URL: '头像链接'
     },
     // Project submission fields
