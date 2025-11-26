@@ -75,7 +75,6 @@ class SubmissionProcessor {
             try {
                 const projectName = parseFieldFromContent(content, FIELD_NAMES.SUBMISSION.PROJECT_NAME);
                 const projectDescription = parseFieldFromContent(content, FIELD_NAMES.SUBMISSION.PROJECT_DESCRIPTION);
-                const projectMembers = parseFieldFromContent(content, FIELD_NAMES.SUBMISSION.PROJECT_MEMBERS);
                 const projectLeader = parseFieldFromContent(content, FIELD_NAMES.SUBMISSION.PROJECT_LEADER);
                 const repositoryUrl = parseFieldFromContent(content, FIELD_NAMES.SUBMISSION.REPOSITORY_URL);
 
@@ -90,7 +89,6 @@ class SubmissionProcessor {
                     githubUser: githubUser,
                     projectName: projectName,
                     projectDescription,
-                    projectMembers,
                     projectLeader,
                     repositoryUrl
                 };
@@ -108,7 +106,7 @@ class SubmissionProcessor {
         });
 
         // Generate table content directly
-        let table = '| 项目 | 描述 | 成员 | 负责人 | 仓库 | 操作 |\n| ------- | ----------- | ------- | ------ | ---------- | ------- |\n';
+        let table = '| 项目 | 描述 | 负责人 | 仓库 | 操作 |\n| ------- | ----------- | ------ | ---------- | ------- |\n';
 
         rows.forEach((row) => {
             const issueTitle = `${GITHUB_CONFIG.ISSUE_TITLE_PREFIXES.SUBMISSION} - ${row.projectName}`;
@@ -122,7 +120,7 @@ class SubmissionProcessor {
             // Generate repository link: show 🔗 if exists, ❌ if not
             const repoLink = row.repositoryUrl && row.repositoryUrl.trim() !== '' ? `[🔗](${row.repositoryUrl})` : '❌';
 
-            table += `| ${row.projectName} | ${row.projectDescription} | ${row.projectMembers} | ${row.projectLeader} | ${repoLink} | [编辑](${issueUrl}) |\n`;
+            table += `| ${row.projectName} | ${row.projectDescription} | ${row.projectLeader} | ${repoLink} | [编辑](${issueUrl}) |\n`;
         });
 
         ReadmeManager.updateReadmeSection('SUBMISSION', table);

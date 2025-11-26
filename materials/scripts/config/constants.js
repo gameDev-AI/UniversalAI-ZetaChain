@@ -29,7 +29,6 @@ const FIELD_NAMES = {
     SUBMISSION: {
         PROJECT_NAME: '项目名称',
         PROJECT_DESCRIPTION: '项目描述',
-        PROJECT_MEMBERS: '项目成员',
         PROJECT_LEADER: '项目负责人',
         REPOSITORY_URL: '仓库地址',
         TEAM_MEMBERS_WALLET: '团队成员钱包'

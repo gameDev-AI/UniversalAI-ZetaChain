@@ -69,9 +69,6 @@ ${generateFieldWithRequired(FIELD_NAMES.SUBMISSION.REPOSITORY_URL, '开源仓库
 ${generateFieldWithRequired(FIELD_NAMES.SUBMISSION.PROJECT_LEADER, '项目负责人姓名', 'SUBMISSION')}
 >
 
-${generateFieldWithRequired(FIELD_NAMES.SUBMISSION.PROJECT_MEMBERS, '列出所有团队成员，用逗号分隔', 'SUBMISSION')}
->
-
 ${generateFieldWithRequired(FIELD_NAMES.SUBMISSION.TEAM_MEMBERS_WALLET, '列出所有团队成员的钱包地址，用逗号分隔，例如：Alice:0x12345...，Bob:0x12345...', 'SUBMISSION')}
 >`);
 
