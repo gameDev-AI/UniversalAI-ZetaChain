@@ -116,7 +116,7 @@ Qwen AI 可进一步支持：
 
 > 欢迎通过 PR 添加更多资源。
 
-- [想法](https://lxdao.notion.site/ZetaChain-Qwen-AI-Hackathon-12-2bbdceffe40b80218d9dfabafd803861))
+- [想法](https://lxdao.notion.site/ZetaChain-Qwen-AI-Hackathon-12-2bbdceffe40b80218d9dfabafd803861)
 - [文章](https://zetachain.com/docs/developers/tutorials/intro/)
 - [更多](https://www.zetachain.com/zh-CN)
 
