@@ -9,13 +9,16 @@
 >web3全栈开发新人，年级：大二。技能：之前做过AI产品经理，能把前沿 LLM/AIGC 能力和实际产品/运营场景结合起来，熟练使用各类AI工具，会调用zetachain,qwen ai的API，在保证质量的前提下显著提升团队效率。
 
 **联系方式** (格式：联系方式：联系账号，例如：Telegram: @username，微信: username，邮箱: email@example.com | 必填)
->@Lansyue 
+>Telegram:@Lansyue 
 
 **钱包地址** (您在以太坊主网的钱包地址或 ENS 域名)
 >0x7e23e770d173ac3e62caa2da3c2aecc55c6878f0
 
 **需要组队** (选择一项：是 | 否 | 可能)
 >是
+
+**头像链接**
+> https://avatars.githubusercontent.com/u/228031484?v=4
 
 **头像链接**
 > https://avatars.githubusercontent.com/u/228031484?v=4
